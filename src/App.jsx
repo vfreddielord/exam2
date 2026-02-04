@@ -1,44 +1,34 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// 1. ADD THIS IMPORT BELOW
-import ScrollHandler from './components/ScrollHandler'; 
-
-
+import { Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
-import HomeSection from './pages/HomeSection';
-import About from './pages/About';
-import Skills from './pages/Skills';
-import Projects from './pages/Projects';
-import Reviews from './pages/Reviews';
-import Contact from './pages/Contact';
-import ReviewDetails from './pages/ReviewDetails';
-
 
 export default function App() {
+  const location = useLocation();
+
   return (
-    <Router>
-     
-      <ScrollHandler /> 
+    <div className="bg-black text-white selection:bg-cyan-500 min-h-screen overflow-hidden">
+      <motion.div 
+        key={`bar-${location.pathname}`}
+        initial={{ width: "0%", opacity: 1 }}
+        animate={{ width: "100%", opacity: 0 }}
+        transition={{ duration: 0.6, ease: "circOut" }}
+        className="fixed top-0 left-0 h-[2px] bg-cyan-500 z-[200] pointer-events-none"
+      />
+
+      <Navbar />
       
-      <div className="bg-black text-white selection:bg-cyan-500 overflow-x-hidden scroll-smooth min-h-screen">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={
-            <main className="flex flex-col w-full">
-              <HomeSection />
-              <div id="about" className="w-full overflow-hidden"><About /></div>
-              <div id="skills" className="w-full overflow-hidden"><Skills /></div>
-              <div id="projects" className="w-full overflow-hidden"><Projects /></div>
-              <div id="reviews" className="w-full overflow-hidden"><Reviews /></div>
-              <div id="contact" className="w-full overflow-hidden"><Contact /></div>
-            </main>
-          } />
-          <Route path="/reviews/:id" element={<ReviewDetails />} />
-        </Routes>
-      </div>
-    </Router>
+      <AnimatePresence mode="wait">
+        <motion.main
+          key={location.pathname}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -15 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full h-full"
+        >
+          <Outlet />
+        </motion.main>
+      </AnimatePresence>
+    </div>
   );
 }
-
-
-
-

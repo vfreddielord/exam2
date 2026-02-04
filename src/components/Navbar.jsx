@@ -1,42 +1,36 @@
-import { Link } from 'react-router-dom';
-
+import { NavLink } from 'react-router-dom';
 
 export default function Navbar() {
-  const navLinks = [
-    { name: 'About', href: '/#about' },
-    { name: 'Skills', href: '/#skills' },
-    { name: 'Projects', href: '/#projects' },
-    { name: 'Reviews', href: '/#reviews' },
-    { name: 'Contact', href: '/#contact' },
+  const links = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Skills', path: '/skills' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Reviews', path: '/reviews' },
+    { name: 'Contact', path: '/contact' }
   ];
 
-
   return (
-    <nav className="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-black/50 backdrop-blur-lg border-b border-white/5">
+    <nav className="fixed top-0 left-0 w-full z-[100] px-10 py-6 flex justify-between items-center bg-gradient-to-b from-black to-transparent">
+      <div className="text-white font-black text-xl italic tracking-tighter">
+        FV<span className="text-cyan-500">.</span>
+      </div>
       
-      <Link 
-        to="/" 
-        className="text-xl font-black tracking-tighter hover:text-cyan-500 transition-colors cursor-pointer"
-      >
-        FLV.
-      </Link>
-
-
-      <div className="space-x-8 text-xs font-bold uppercase tracking-widest">
-        {navLinks.map((link) => (
-          <Link
+      <div className="flex gap-8">
+        {links.map((link) => (
+          <NavLink
             key={link.name}
-            to={link.href}
-            className="text-zinc-400 hover:text-cyan-500 transition-all duration-300 relative group"
+            to={link.path}
+            className={({ isActive }) => 
+              `text-[10px] font-mono uppercase tracking-[0.3em] transition-all duration-300 ${
+                isActive ? 'text-cyan-500 underline underline-offset-8' : 'text-white/40 hover:text-white'
+              }`
+            }
           >
             {link.name}
-           
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-cyan-500 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
+          </NavLink>
         ))}
       </div>
     </nav>
   );
-}
-
-
+} 
